@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Escape Room: Flaschenzug Mission</title>
+<style>
+body { font-family: Arial; background: #111; color: white; text-align: center; }
+.container { margin: 40px auto; width: 600px; background: #222; padding: 20px; border-radius: 15px; }
+button { padding: 10px 20px; margin: 10px; cursor: pointer; }
+.correct { background-color: green; }
+.wrong { background-color: red; }
+img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>🔐 Escape Room: Die Mechanik-Falle</h1>
+<p id="story"></p>
+<img id="image" src="" alt="">
+<p id="question"></p>
+<div id="answers"></div>
+<p id="result"></p>
+</div>
+
+<script>
+
+const game = [
+{
+story: "Du bist in einem alten Maschinenraum eingeschlossen. Um zu entkommen, musst du Mechanik-Rätsel lösen.",
+image: "https://images.unsplash.com/photo-1581091215367-59ab6b6e2f94",
+question: "Was ist die goldene Regel der Mechanik?",
+answers: [
+"Weniger Kraft = weniger Arbeit",
+"Weniger Kraft = längerer Weg",
+"Mehr Kraft = weniger Weg"
+],
+correct: 1
+},
+{
+story: "Du findest eine feste Rolle an der Decke.",
+image: "https://images.unsplash.com/photo-1581093588401-22a8c1b7b5d7",
+question: "Was bewirkt eine feste Rolle?",
+answers: [
+"Sie halbiert die Kraft",
+"Sie lenkt die Kraft um",
+"Sie verdoppelt den Weg"
+],
+correct: 1
+},
+{
+story: "Eine schwere Kiste hängt an einer losen Rolle.",
+image: "https://images.unsplash.com/photo-1602524817487-6c2d5c7c1f08",
+question: "Wie groß ist die Krafterleichterung bei einer losen Rolle?",
+answers: [
+"1:1",
+"1:2",
+"1:3"
+],
+correct: 1
+},
+{
+story: "Du kombinierst feste und lose Rollen.",
+image: "https://images.unsplash.com/photo-1581091216273-4b4d4c1c2e0f",
+question: "Was passiert mit der Krafterleichterung?",
+answers: [
+"Sie bleibt gleich wie bei der losen Rolle",
+"Sie verdoppelt sich",
+"Sie verschwindet"
+],
+correct: 0
+},
+{
+story: "Du entdeckst einen Faktorenflaschenzug.",
+image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e",
+question: "Wie verteilt sich die Kraft im Faktorenflaschenzug?",
+answers: [
+"Ungleichmäßig",
+"Nur auf ein Seil",
+"Gleichmäßig auf alle Seile"
+],
+correct: 2
+},
+{
+story: "Ein komplizierter Potenzflaschenzug erscheint.",
+image: "https://images.unsplash.com/photo-1581091870622-6c1d1d92e2d0",
+question: "Was ist besonders am Potenzflaschenzug?",
+answers: [
+"Alle Kräfte sind gleich",
+"Kräfte sind unterschiedlich",
+"Keine Krafterleichterung"
+],
+correct: 1
+},
+{
+story: "Die letzte Tür hat einen Differenzialflaschenzug.",
+image: "https://images.unsplash.com/photo-1581093588401-22a8c1b7b5d7",
+question: "Was zeichnet den Differenzialflaschenzug aus?",
+answers: [
+"Zwei gleich große Rollen",
+"Zwei unterschiedliche Rollen",
+"Nur lose Rollen"
+],
+correct: 1
+}
+];
+
+let current = 0;
+
+function loadQuestion() {
+const q = game[current];
+document.getElementById("story").innerText = q.story;
+document.getElementById("image").src = q.image;
+document.getElementById("question").innerText = q.question;
+
+const answersDiv = document.getElementById("answers");
+answersDiv.innerHTML = "";
+
+q.answers.forEach((a, i) => {
+const btn = document.createElement("button");
+btn.innerText = a;
+btn.onclick = () => checkAnswer(i);
+answersDiv.appendChild(btn);
+});
+}
+
+function checkAnswer(i) {
+const correct = game[current].correct;
+
+if(i === correct){
+document.getElementById("result").innerText = "✔ Richtig! Du kommst weiter...";
+current++;
+
+if(current >= game.length){
+document.querySelector(".container").innerHTML = "<h1>🎉 Du bist entkommen!</h1><p>Du hast alle Mechanik-Rätsel gelöst!</p>";
+return;
+}
+
+setTimeout(() => {
+document.getElementById("result").innerText = "";
+loadQuestion();
+}, 1000);
+
+} else {
+document.getElementById("result").innerText = "❌ Falsch! Versuche es erneut.";
+}
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
